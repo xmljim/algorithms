@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface NamedEntity
+interface VariableEntity
+interface Parameter<T>
+interface ScalarParameter
+interface Function<T>
+interface FunctionParameter<T>
+interface ScalarFunction
+interface ScalarFunctionParameter
+interface Vector<T>
+interface VectorParameter<T>
+interface ScalarVector
+interface ScalarVectorParameter
+
+class Scalar
+
+NamedEntity <|-- VariableEntity
+VariableEntity <|-- Parameter
+Parameter <|-- ScalarParameter
+ScalarParameter *-- Scalar
+Parameter <|-- FunctionParameter
+FunctionParameter *-- Function
+Parameter <|-- VectorParameter
+VectorParameter *-- Vector
+Function <|-- ScalarFunction
+FunctionParameter <|-- ScalarFunctionParameter
+ScalarFunctionParameter *-- ScalarFunction
+ScalarFunction *-- Scalar
+Vector <|-- ScalarVector
+@enduml

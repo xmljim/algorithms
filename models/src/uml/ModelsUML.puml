@@ -1,0 +1,34 @@
+@startuml
+interface NamedEntity
+interface VariableEntity
+interface Parameter<T>
+interface Vector<T>
+interface Parameterized
+interface Function<T>
+interface Model
+interface Coefficient<T>
+interface Matrix
+
+interface ModelProvider
+interface ParameterFactory
+interface VectorFactory
+
+note top of ModelProvider: This is the ServiceModel Hook for impl providers
+note bottom of Parameter: There are several extension "tagging interfaces" for <T>
+ModelProvider --* VectorFactory
+ModelProvider --* ParameterFactory
+VectorFactory "Creates" ..* Vector
+ParameterFactory "Creates" ..* Parameter
+NamedEntity <|-- VariableEntity
+VariableEntity <|-- Parameterized
+VariableEntity <|-- Parameter
+Parameterized <|-- Function
+Parameterized <|-- Model
+VariableEntity <|-- Vector
+NamedEntity <|-- Coefficient
+NamedEntity <|-- Matrix
+Coefficient "0..n" *-- "1" Model
+Parameterized *-- Parameter
+
+
+@enduml

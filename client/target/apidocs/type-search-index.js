@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"io.xmljim.algorithms.client","l":"AlgorithmClient"},{"l":"All Classes","u":"allclasses-index.html"},{"p":"io.xmljim.algorithms.client","l":"ProviderNotAvailableException"}];updateSearchResults();

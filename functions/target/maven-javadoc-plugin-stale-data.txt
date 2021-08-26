@@ -1,0 +1,53 @@
+@options
+@packages
+-classpath
+'/Users/jearley/code/personal/algorithms/models/target/models-1.0-SNAPSHOT.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'15'
+-sourcepath
+'/Users/jearley/code/personal/algorithms/functions/src/main/java:/Users/jearley/code/personal/algorithms/functions/target/generated-sources/annotations'
+-Xdoclint:none
+-author
+-bottom
+'Copyright &#169; 2021. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/jearley/code/personal/algorithms/functions/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'functions 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/en/java/javase/15/docs/api' '/Users/jearley/code/personal/algorithms/functions/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'functions 1.0-SNAPSHOT API'
+io.xmljim.algorithms.functions.statistics
+io.xmljim.algorithms.functions.provider
+/Users/jearley/code/personal/algorithms/models/target/models-1.0-SNAPSHOT.jar = 1629766932172
+/Users/jearley/code/personal/algorithms/functions/src/main/java = 1629295556637
+/Users/jearley/code/personal/algorithms/functions/target/generated-sources/annotations = 1629766937175
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/constant-values.html = 1629766938650
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/tag-search-index.js = 1629766938712
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/overview-tree.html = 1629766938674
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/module-search-index.js = 1629766938710
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/index.html = 1629766938682
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/package-search-index.js = 1629766938710
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/jquery-ui.overrides.css = 1629766938741
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/index-all.html = 1629766938714
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/allpackages-index.html = 1629766938720
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/deprecated-list.html = 1629766938678
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/member-search-index.js = 1629766938711
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/script.js = 1629766938728
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/stylesheet.css = 1629766938727
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/overview-summary.html = 1629766938721
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/help-doc.html = 1629766938724
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/element-list = 1629766938634
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/allclasses-index.html = 1629766938718
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/type-search-index.js = 1629766938711
+/Users/jearley/code/personal/algorithms/functions/target/apidocs/search.js = 1629766938730

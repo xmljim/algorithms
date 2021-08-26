@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.xmljim.algorithms.functions.impl"},{"l":"io.xmljim.algorithms.functions.impl.provider"},{"l":"io.xmljim.algorithms.functions.impl.statistics"}];updateSearchResults();
