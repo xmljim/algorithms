@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: io.xmljim.algorithms.functions.impl.statistics.VarianceFunctionTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s - in io.xmljim.algorithms.functions.impl.statistics.VarianceFunctionTest

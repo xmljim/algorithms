@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"io.xmljim.algorithms.functions.provider","l":"FunctionProvider"},{"p":"io.xmljim.algorithms.functions.statistics","l":"LinearRegressionModel"},{"p":"io.xmljim.algorithms.functions.statistics","l":"Statistics"}];updateSearchResults();
