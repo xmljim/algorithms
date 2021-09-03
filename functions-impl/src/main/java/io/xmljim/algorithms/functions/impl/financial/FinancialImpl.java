@@ -63,7 +63,11 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
      */
     @Override
     public ScalarFunction weightedGrowth(final double stockRate, final double treasuryRate, final double proportion) {
-        return null;
+        ScalarParameter stockRateParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_STOCK_GROWTH_RATE, stockRate);
+        ScalarParameter treasuryRateParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_TREASURY_YIELD, treasuryRate);
+        ScalarParameter investmentRatioParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_INVESTMENT_RATIO, proportion);
+
+        return new WeightedGrowthFunction(stockRateParam, treasuryRateParam, investmentRatioParam);
     }
 
     /**

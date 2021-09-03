@@ -63,12 +63,12 @@ class AmortizeFunctionTest {
 
     @Test
     void testWithRealValue() {
-        int currentAge = 53;
+        int currentAge = 43;
         int retirementAge = 67;
-        double currentSalary = 160_000;
+        double currentSalary = 100_000;
         double selfContribPct = 0.1;
         double emplContribPct = 0.04;
-        double currentBalance = 673_759;
+        double currentBalance = 500_000;
         double colaPct = 0.02;
         double weightedGrowthPct = 0.084;
 
@@ -84,9 +84,6 @@ class AmortizeFunctionTest {
         int duration = 30;
 
         ScalarFunction distributionFx = functionProvider.getFinancial().amortize(balance, interest, frequency, duration);
-        System.out.println(balance);
-        System.out.println(distributionFx.compute());
-        System.out.println(model.getLastSalary().asDouble() / 12);
 
     }
 }

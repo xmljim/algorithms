@@ -49,12 +49,12 @@ class RetirementContributionModelImplTest {
 
     @Test
     void testModel() {
-        int currentAge = 53;
+        int currentAge = 32;
         int retirementAge = 67;
-        double currentSalary = 160_000;
+        double currentSalary = 85_000;
         double selfContribPct = 0.1;
         double emplContribPct = 0.04;
-        double currentBalance = 673_759;
+        double currentBalance = 32_000;
         double colaPct = 0.02;
         double weightedGrowthPct = 0.093;
 
@@ -64,11 +64,7 @@ class RetirementContributionModelImplTest {
 
         model.solve();
 
-        System.out.println(model.getContributionTimelineCoefficient());
-        System.out.println(model.getBalanceCoefficient());
-        System.out.println(model.getTotalEmployerContributionCoefficient());
-        System.out.println(model.getTotalSelfContributionCoefficient());
-        System.out.println(model.getTotalInterestCoefficient());
+
     }
 
 }
