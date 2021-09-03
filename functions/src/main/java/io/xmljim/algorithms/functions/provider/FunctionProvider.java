@@ -24,8 +24,12 @@
 
 package io.xmljim.algorithms.functions.provider;
 
+import io.xmljim.algorithms.functions.financial.Financial;
 import io.xmljim.algorithms.functions.statistics.Statistics;
 
 public interface FunctionProvider {
+
     Statistics getStatistics();
+
+    Financial getFinancial();
 }

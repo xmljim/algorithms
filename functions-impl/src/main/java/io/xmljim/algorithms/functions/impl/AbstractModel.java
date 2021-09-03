@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
-public abstract class AbstractModel extends AbstractParameterized implements Model {
+public abstract class AbstractModel extends ExtendedParameterized implements Model {
     private FunctionProvider functionProvider;
     private ModelProvider modelProvider;
     private Map<String, Coefficient<?>> coefficientMap = new HashMap<>();
@@ -57,6 +57,15 @@ public abstract class AbstractModel extends AbstractParameterized implements Mod
 
     public void setCoefficient(FunctionType functionType, ScalarFunction function) {
         setCoefficient(functionType.getName(), functionType.getLabel(), function.compute());
+    }
+
+    public void setCoefficient(FunctionType functionType, Scalar scalar) {
+        setCoefficient(functionType.getName(), functionType.getLabel(), scalar);
+    }
+
+    public <T> void setCoefficient(FunctionType functionType, T value) {
+        Coefficient<T> coefficient = getModelProvider().getCoefficientFactory().createCoefficient(functionType.getName(), functionType.getLabel(), value);
+        setCoefficient(coefficient);
     }
 
     @Override

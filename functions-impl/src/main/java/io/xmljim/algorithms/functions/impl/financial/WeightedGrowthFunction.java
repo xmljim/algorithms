@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2021 Jim Earley (xml.jim@gmail.com)
  *
@@ -22,25 +21,24 @@
  *
  */
 
-package io.xmljim.algorithms.functions.impl.provider;
+package io.xmljim.algorithms.functions.impl.financial;
 
-import io.xmljim.algorithms.functions.financial.Financial;
-import io.xmljim.algorithms.functions.impl.financial.FinancialImpl;
-import io.xmljim.algorithms.functions.impl.statistics.StatisticsImpl;
-import io.xmljim.algorithms.functions.provider.FunctionProvider;
-import io.xmljim.algorithms.functions.statistics.Statistics;
+import io.xmljim.algorithms.functions.impl.AbstractScalarFunction;
+import io.xmljim.algorithms.functions.impl.provider.NameConstants;
+import io.xmljim.algorithms.model.ScalarParameter;
+import io.xmljim.algorithms.model.util.Scalar;
 
-public class FunctionProviderImpl implements FunctionProvider {
-    final Statistics statistics = new StatisticsImpl(this);
-    final Financial financial = new FinancialImpl(this);
-
-    @Override
-    public Statistics getStatistics() {
-        return statistics;
+class WeightedGrowthFunction extends AbstractScalarFunction {
+    public WeightedGrowthFunction(ScalarParameter stockGrowthRateParam, ScalarParameter treasuryYieldParam, ScalarParameter proportionStocks) {
+        super(FinancialFunctions.WEIGHTED_GROWTH, stockGrowthRateParam, treasuryYieldParam, proportionStocks);
     }
 
     @Override
-    public Financial getFinancial() {
-        return financial;
+    public Scalar compute() {
+        double stockRate = ((Scalar)getValue(NameConstants.FIN_STOCK_GROWTH_RATE)).asDouble();
+        double treasuryYield = ((Scalar)getValue(NameConstants.FIN_TREASURY_YIELD)).asDouble();
+        double investmentRatio = ((Scalar)getValue(NameConstants.FIN_INVESTMENT_RATIO)).asDouble();
+
+        return Scalar.of((stockRate * investmentRatio) + (treasuryYield * (1 - investmentRatio)));
     }
 }

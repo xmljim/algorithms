@@ -23,6 +23,7 @@
 
 package io.xmljim.algorithms.client;
 
+import io.xmljim.algorithms.functions.financial.Financial;
 import io.xmljim.algorithms.functions.provider.FunctionProvider;
 import io.xmljim.algorithms.functions.statistics.Statistics;
 import io.xmljim.algorithms.model.provider.*;
@@ -38,14 +39,14 @@ public class AlgorithmClient {
         modelProvider = modelProviders.iterator().next();
 
         if (modelProvider == null) {
-            throw new ProviderNotAvailableException("Provider for " + modelProvider.getClass().getName() + " not available");
+            throw new ProviderNotAvailableException("Provider for " + ModelProvider.class.getName() + " not available");
         }
 
         Iterable<FunctionProvider> functionProviders = ServiceLoader.load(FunctionProvider.class);
         functionProvider = functionProviders.iterator().next();
 
         if (functionProvider == null) {
-            throw new ProviderNotAvailableException("Provider for " + functionProvider.getClass().getName() + " not available");
+            throw new ProviderNotAvailableException("Provider for " + FunctionProvider.class.getName() + " not available");
         }
     }
 
@@ -59,6 +60,10 @@ public class AlgorithmClient {
 
     public Statistics getStatistics() {
         return getFunctionProvider().getStatistics();
+    }
+
+    public Financial getFinancial() {
+        return getFunctionProvider().getFinancial();
     }
 
     public ParameterFactory getParameterFactory() {

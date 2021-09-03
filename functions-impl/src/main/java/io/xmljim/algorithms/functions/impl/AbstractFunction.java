@@ -25,15 +25,14 @@
 package io.xmljim.algorithms.functions.impl;
 
 import io.xmljim.algorithms.functions.provider.FunctionProvider;
-import io.xmljim.algorithms.model.AbstractParameterized;
-import io.xmljim.algorithms.model.Function;
-import io.xmljim.algorithms.model.Parameter;
+import io.xmljim.algorithms.model.*;
 import io.xmljim.algorithms.model.provider.ModelProvider;
+import io.xmljim.algorithms.model.util.Scalar;
 
 import java.util.List;
 import java.util.ServiceLoader;
 
-public abstract class AbstractFunction<T> extends AbstractParameterized implements Function<T> {
+public abstract class AbstractFunction<T> extends ExtendedParameterized implements Function<T> {
     private FunctionProvider functionProvider;
     private ModelProvider modelProvider;
     private FunctionType functionType;
@@ -57,6 +56,8 @@ public abstract class AbstractFunction<T> extends AbstractParameterized implemen
         super(functionType.getName(), variable, parameters);
         this.functionType = functionType;
     }
+
+
 
     public FunctionType getFunctionType() {
         return functionType;

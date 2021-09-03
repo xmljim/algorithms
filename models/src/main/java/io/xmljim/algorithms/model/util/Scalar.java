@@ -160,6 +160,8 @@ public final class Scalar extends Number implements Comparable<Scalar> {
     public boolean equals(Object object) {
         if (object instanceof Scalar) {
             return asDouble() == ((Scalar) object).asDouble();
+        } else if (object instanceof Number) {
+            equals(Scalar.of((Number)object));
         }
         return false;
     }

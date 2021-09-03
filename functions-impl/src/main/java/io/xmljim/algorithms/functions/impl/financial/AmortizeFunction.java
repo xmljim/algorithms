@@ -21,32 +21,36 @@
  *
  */
 
-package io.xmljim.algorithms.functions.impl.statistics;
+package io.xmljim.algorithms.functions.impl.financial;
 
+import io.xmljim.algorithms.functions.financial.PaymentFrequency;
 import io.xmljim.algorithms.functions.impl.AbstractScalarFunction;
 import io.xmljim.algorithms.functions.impl.provider.NameConstants;
-import io.xmljim.algorithms.model.ScalarFunction;
-import io.xmljim.algorithms.model.ScalarFunctionParameter;
+import io.xmljim.algorithms.model.Parameter;
 import io.xmljim.algorithms.model.ScalarParameter;
 import io.xmljim.algorithms.model.util.Scalar;
-import org.apache.commons.math3.distribution.TDistribution;
 
-class PSlopeFunction extends AbstractScalarFunction {
+class AmortizeFunction extends AbstractScalarFunction {
     private Scalar result;
 
-    public PSlopeFunction(ScalarParameter degreesOfFreedom, ScalarFunctionParameter tStatisticParameter) {
-        super(StatisticsFunctions.P_SLOPE, degreesOfFreedom, tStatisticParameter);
+    //final double balance, final double interest, PaymentFrequency frequency, final int durationYear, final double inflation, final double retirementSTartYear
+
+    public AmortizeFunction(ScalarParameter balance, ScalarParameter interest, Parameter<PaymentFrequency> frequencyParameter, ScalarParameter duration) {
+        super(FinancialFunctions.AMORTIZE, balance, interest, frequencyParameter, duration);
     }
 
-    Scalar getResult() {
-        Scalar dfValue = getValue(NameConstants.DEGREES_OF_FREEDOM);
-        ScalarFunction tStatFunction = getValue(StatisticsFunctions.T_SLOPE.getName());
-        double tStat = tStatFunction.compute().asDouble();
+    private Scalar getResult() {
+        double amount = getDouble(NameConstants.FIN_CURRENT_401K_BALANCE);
+        double interest = getDouble(NameConstants.FIN_POST_RETIRE_INTEREST);
+        PaymentFrequency frequency = getValue(NameConstants.FIN_DISTRIBUTION_FREQUENCY);
+        int duration = getInteger(NameConstants.FIN_RETIREMENT_DURATION);
 
-        TDistribution tDistribution = new TDistribution(dfValue.asDouble());
-        double cp = tDistribution.cumulativeProbability(Math.abs(tStat));
-        double p = 2 * (1 - cp);
-        return Scalar.of(p);
+        double intervalRate = interest / frequency.getAnnualFrequency();
+        int totalDistributions = duration * frequency.getAnnualFrequency();
+
+        double value = amount / ((Math.pow(1 + intervalRate, totalDistributions) - 1) / (intervalRate * Math.pow(1 + intervalRate, totalDistributions)));
+
+        return Scalar.of(value);
     }
 
     @Override
@@ -54,6 +58,7 @@ class PSlopeFunction extends AbstractScalarFunction {
         if (result == null) {
             result = getResult();
         }
+
         return result;
     }
 }

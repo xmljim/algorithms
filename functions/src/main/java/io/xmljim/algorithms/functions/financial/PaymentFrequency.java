@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2021 Jim Earley (xml.jim@gmail.com)
  *
@@ -22,25 +21,22 @@
  *
  */
 
-package io.xmljim.algorithms.functions.impl.provider;
+package io.xmljim.algorithms.functions.financial;
 
-import io.xmljim.algorithms.functions.financial.Financial;
-import io.xmljim.algorithms.functions.impl.financial.FinancialImpl;
-import io.xmljim.algorithms.functions.impl.statistics.StatisticsImpl;
-import io.xmljim.algorithms.functions.provider.FunctionProvider;
-import io.xmljim.algorithms.functions.statistics.Statistics;
+public enum PaymentFrequency {
+    ANNUAL(1),
+    SEMI_ANNUAL(2),
+    QUARTERLY(4),
+    MONTHLY(12)
+    ;
 
-public class FunctionProviderImpl implements FunctionProvider {
-    final Statistics statistics = new StatisticsImpl(this);
-    final Financial financial = new FinancialImpl(this);
+    private int annualFrequency;
 
-    @Override
-    public Statistics getStatistics() {
-        return statistics;
+    public int getAnnualFrequency() {
+        return annualFrequency;
     }
 
-    @Override
-    public Financial getFinancial() {
-        return financial;
+    PaymentFrequency(int annualFrequency) {
+        this.annualFrequency = annualFrequency;
     }
 }

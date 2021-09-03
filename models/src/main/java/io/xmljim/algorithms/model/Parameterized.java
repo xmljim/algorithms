@@ -120,6 +120,11 @@ public interface Parameterized extends VariableEntity {
         return (T) parameter.map(Parameter::getValue).orElse(null);
     }
 
+    default Optional<ParameterTypes> getParameterType(String name) {
+        Optional<Parameter<?>> parameter = getParameter(name);
+        return Optional.ofNullable(parameter.map(Parameter::getParameterType).orElse(null));
+    }
+
     /**
      * Return a parameter value from a given parameter by variable name
      * @param variable the variable

@@ -23,54 +23,63 @@
 
 package io.xmljim.algorithms.functions.financial;
 
+import io.xmljim.algorithms.model.Coefficient;
 import io.xmljim.algorithms.model.Model;
 import io.xmljim.algorithms.model.ScalarCoefficient;
 import io.xmljim.algorithms.model.util.Scalar;
 
+import java.util.List;
+
+/**
+ * Model inputs
+ * - Current Salary (as of today)
+ * - Employee Contribution Pct
+ * - Employer Contribution Pct (keep it simple for now)
+ * - Weighted growth (see weighted growth function)
+ * - Current Balance
+ * - COLA Pct (for salary)
+ * - Inflation (??)
+ * - Current Age
+ * - Age at retirement
+ * Model ouputs coefficient
+ * - Timeline coefficient
+ * - Balance coefficient
+ */
 public interface RetirementContributionModel extends Model {
-    ScalarCoefficient getCurrentSalaryCoefficient();
 
-    ScalarCoefficient getYearCoefficient();
+    Coefficient<List<ContributionBalance>> getContributionTimelineCoefficient();
 
-    ScalarCoefficient getCOLACoefficient();
+    ScalarCoefficient getBalanceCoefficient();
 
-    ScalarCoefficient getInflationCoefficient();
+    ScalarCoefficient getTotalInterestCoefficient();
 
-    ScalarCoefficient getEmployeeContributionPctCoefficient();
+    ScalarCoefficient getTotalSelfContributionCoefficient();
 
-    ScalarCoefficient getEmployerContributionPctCoefficient();
+    ScalarCoefficient getTotalEmployerContributionCoefficient();
 
-    ScalarCoefficient getCurrentBalanceCoefficient();
+    ScalarCoefficient getLastSalaryCoefficient();
 
-    ScalarCoefficient getGrowthRateCoefficient();
-
-    ScalarCoefficient getInterestPrincipleCoefficient();
-
-    ScalarCoefficient getInterestContributionsCoefficient();
-
-    ScalarCoefficient getUpdatedBalanceCoefficient();
-
-    default Scalar getYear() {
-        ScalarCoefficient yearCoefficient = getYearCoefficient();
-        if (yearCoefficient != null) {
-            return yearCoefficient.getValue();
-        }
-        return null;
+    default List<ContributionBalance> getContributionTimeline() {
+        return getContributionTimelineCoefficient().getValue();
     }
 
-    default Scalar getCOLA() {
-        ScalarCoefficient colaCoefficient = getCOLACoefficient();
-        if (colaCoefficient != null) {
-            return colaCoefficient.getValue();
-        }
-        return null;
+    default Scalar getBalance() {
+        return getBalanceCoefficient().getValue();
     }
 
-    default Scalar getCurrentBalance() {
-        ScalarCoefficient currentBalanceCoefficient = getCurrentBalanceCoefficient();
-        if (currentBalanceCoefficient != null) {
-            return currentBalanceCoefficient.getValue();
-        }
-        return null;
+    default Scalar getTotalInterest() {
+        return getTotalInterestCoefficient().getValue();
+    }
+
+    default Scalar getTotalSelfContribution() {
+        return getTotalSelfContributionCoefficient().getValue();
+    }
+
+    default Scalar getTotalEmployerContribution() {
+        return getTotalEmployerContributionCoefficient().getValue();
+    }
+
+    default Scalar getLastSalary() {
+        return getLastSalaryCoefficient().getValue();
     }
 }
