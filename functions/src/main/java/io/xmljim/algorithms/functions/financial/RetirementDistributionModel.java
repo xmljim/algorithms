@@ -69,6 +69,10 @@ public interface RetirementDistributionModel extends Model {
      */
     ScalarCoefficient getLastDistributionYearCoefficient();
 
+    ScalarCoefficient getTotalDistributionsCoefficient();
+
+    ScalarCoefficient getTotalInterestCoefficient();
+
     /**
      * Returns the estimated distribution schedule
      * @return the estimated distribution schedule
@@ -101,5 +105,13 @@ public interface RetirementDistributionModel extends Model {
      */
     default Scalar getBaseYearAnnualDistribution() {
         return getBaseYearAnnualDistributionCoefficient().getValue();
+    }
+
+    default Scalar getTotalDistributions() {
+        return getTotalDistributionsCoefficient().getValue();
+    }
+
+    default Scalar getTotalInterest() {
+        return getTotalInterestCoefficient().getValue();
     }
 }

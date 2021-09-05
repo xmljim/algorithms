@@ -129,7 +129,8 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
      */
     @Override
     public Function<DistributionBalance> distributionBalance(final double currentBalance, final double amortizedValue, final double inflation,
-                                                             final double retirementInterest, final int retirementYear, final int currentYear) {
+                                                             final double retirementInterest, final int retirementYear, final int currentYear,
+                                                             PaymentFrequency distributionFrequency) {
 
         ScalarParameter currentBalanceParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_CURRENT_401K_BALANCE, currentBalance);
         ScalarParameter amortizedParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_ANNUAL_DISTRIBUTION, amortizedValue);
@@ -137,8 +138,9 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
         ScalarParameter retirementInterestParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_WEIGHTED_GROWTH_RATE, retirementInterest);
         ScalarParameter retirementYearParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_RETIREMENT_START_YEAR, retirementYear);
         ScalarParameter currentYearParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_CURRENT_YEAR, currentYear);
+        Parameter<PaymentFrequency> distributionFrequencyParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_DISTRIBUTION_FREQUENCY, distributionFrequency);
 
-        return new DistributionBalanceFunction(currentBalanceParam, amortizedParam, inflationParam, retirementInterestParam, retirementYearParam, currentYearParam);
+        return new DistributionBalanceFunction(currentBalanceParam, amortizedParam, inflationParam, retirementInterestParam, retirementYearParam, currentYearParam, distributionFrequencyParam);
     }
 
     /**

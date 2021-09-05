@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="io.xmljim.algorithms.client.AlgorithmClientTest" time="0.041" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="io.xmljim.algorithms.client.AlgorithmClientTest" time="0.042" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="15"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/local/Cellar/openjdk/15.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/jearley/code/personal/algorithms/client/target/surefire/surefirebooter8767631375859399799.jar /Users/jearley/code/personal/algorithms/client/target/surefire 2021-09-03T11-15-59_879-jvmRun1 surefire3995022165014791371tmp surefire_2659319182410945317tmp"/>
+    <property name="sun.java.command" value="/Users/jearley/code/personal/algorithms/client/target/surefire/surefirebooter5863327426807712085.jar /Users/jearley/code/personal/algorithms/client/target/surefire 2021-09-03T16-18-50_608-jvmRun1 surefire7740885203379555028tmp surefire_26445958571288992742tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/jearley/code/personal/algorithms/client/target/test-classes:/Users/jearley/code/personal/algorithms/client/target/classes:/Users/jearley/code/personal/algorithms/models/target/models-1.0-SNAPSHOT.jar:/Users/jearley/code/personal/algorithms/functions/target/functions-1.0-SNAPSHOT.jar:/Users/jearley/code/personal/algorithms/functions-impl/target/functions-impl-1.0-SNAPSHOT.jar:/Users/jearley/.m2/repository/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar:/Users/jearley/code/personal/algorithms/models-impl/target/models-impl-1.0-SNAPSHOT.jar:/Users/jearley/.m2/repository/org/junit/jupiter/junit-jupiter/5.7.2/junit-jupiter-5.7.2.jar:/Users/jearley/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.2/junit-jupiter-api-5.7.2.jar:/Users/jearley/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/jearley/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/jearley/.m2/repository/org/junit/platform/junit-platform-commons/1.7.2/junit-platform-commons-1.7.2.jar:/Users/jearley/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.7.2/junit-jupiter-params-5.7.2.jar:/Users/jearley/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.7.2/junit-jupiter-engine-5.7.2.jar:/Users/jearley/.m2/repository/org/junit/platform/junit-platform-engine/1.7.2/junit-platform-engine-1.7.2.jar:"/>
@@ -28,7 +28,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/Users/jearley/code/personal/algorithms/client/target/surefire/surefirebooter8767631375859399799.jar"/>
+    <property name="surefire.real.class.path" value="/Users/jearley/code/personal/algorithms/client/target/surefire/surefirebooter5863327426807712085.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="15.0.2+7"/>
@@ -53,5 +53,5 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="59.0"/>
   </properties>
-  <testcase name="testCreation" classname="io.xmljim.algorithms.client.AlgorithmClientTest" time="0.032"/>
+  <testcase name="testCreation" classname="io.xmljim.algorithms.client.AlgorithmClientTest" time="0.029"/>
 </testsuite>

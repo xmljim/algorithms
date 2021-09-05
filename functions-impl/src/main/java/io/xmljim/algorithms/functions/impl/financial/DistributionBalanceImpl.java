@@ -33,10 +33,12 @@ class DistributionBalanceImpl extends AbstractRetirementBalance implements Distr
     private double periodicDistributionAmount;
 
     public DistributionBalanceImpl(final int year, final double balance, final double interest, final double weightedGrowthRate, final double distributionAmount,
-                                   final double inflationRate) {
-        super(year, balance, interest, weightedGrowthRate);
+                                   final double inflationRate, PaymentFrequency paymentFrequency) {
+        super("distribution", year, balance, interest, weightedGrowthRate);
         this.annualDistributionAmount = distributionAmount;
         this.inflationRate = inflationRate;
+        this.paymentFrequency = paymentFrequency;
+        this.periodicDistributionAmount = annualDistributionAmount / paymentFrequency.getAnnualFrequency();
     }
 
     @Override

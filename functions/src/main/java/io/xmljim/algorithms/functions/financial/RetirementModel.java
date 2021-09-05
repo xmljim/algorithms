@@ -35,17 +35,6 @@ import java.util.List;
  */
 public interface RetirementModel extends Model {
 
-    /**
-     * The coefficient holding the retirement contribution model
-     * @return retirement contribution model coefficient
-     */
-    public Coefficient<RetirementContributionModel> getRetirementContributionModelCoefficient();
-
-    /**
-     * The coefficient holding the retirement distribution model
-     * @return retirement distribution model coefficient;
-     */
-    public Coefficient<RetirementDistributionModel> getRetirementDistributionModelCoefficient();
 
     /**
      * Return the coefficient holding the entire contribution/distribution timeline balances over time
@@ -65,13 +54,27 @@ public interface RetirementModel extends Model {
      */
     public ScalarCoefficient getRetirementBalanceDepletionYearCoefficient();
 
-    default RetirementContributionModel getContributionModel() {
-        return getRetirementContributionModelCoefficient().getValue();
-    }
+    public ScalarCoefficient getRetirementYearCoefficient();
 
-    default RetirementDistributionModel getDistributionModel() {
-        return getRetirementDistributionModelCoefficient().getValue();
-    }
+    public ScalarCoefficient getBalanceAtRetirementCoefficient();
+
+    public ScalarCoefficient getTotalInterestCoefficient();
+
+    public ScalarCoefficient getTotalDistributionsCoefficient();
+
+    public ScalarCoefficient getTotalSelfContributionsCoefficient();
+
+    public ScalarCoefficient getTotalEmployerContributionsCoefficient();
+
+    public ScalarCoefficient getTotalDistributionYearsCoefficient();
+
+    public ScalarCoefficient getBaseAnnualDistributionCoefficient();
+
+    RetirementContributionModel getContributionModel();
+
+    RetirementDistributionModel getDistributionModel();
+
+
 
     default List<RetirementBalance> getRetirementTimeline() {
         return getRetirementTimelineCoefficient().getValue();
@@ -85,4 +88,35 @@ public interface RetirementModel extends Model {
         return getRetirementBalanceDepletionYearCoefficient().getValue();
     }
 
+    default Scalar getRetirementYear() {
+        return getRetirementYearCoefficient().getValue();
+    }
+
+    default Scalar getBalanceAtRetirement() {
+        return getBalanceAtRetirementCoefficient().getValue();
+    }
+
+    default Scalar getTotalInterest() {
+        return getTotalInterestCoefficient().getValue();
+    }
+
+    default Scalar getTotalDistributions() {
+        return getTotalDistributionsCoefficient().getValue();
+    }
+
+    default Scalar getTotalSelfContributions() {
+        return getTotalSelfContributionsCoefficient().getValue();
+    }
+
+    default Scalar getTotalEmployerContributions() {
+        return getTotalEmployerContributionsCoefficient().getValue();
+    }
+
+    default Scalar getTotalDistributionYears() {
+        return getTotalDistributionYearsCoefficient().getValue();
+    }
+
+    default Scalar getBaseAnnualContribution() {
+        return getBaseAnnualDistributionCoefficient().getValue();
+    }
 }

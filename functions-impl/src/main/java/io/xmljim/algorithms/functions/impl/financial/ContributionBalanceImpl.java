@@ -37,7 +37,7 @@ class ContributionBalanceImpl extends AbstractRetirementBalance implements Contr
                                    final double selfContributionPct, final double employerContributionPct, final double currentSalary,
                                    final double colaPct, final double estimatedSelfContribution, final double estimatedEmployerContribution) {
 
-        super(year, balance, interest, weightedGrowthRate);
+        super("contribution", year, balance, interest, weightedGrowthRate);
         this.selfContributionPct = selfContributionPct;
         this.employerContributionPct = employerContributionPct;
         this.currentSalary = currentSalary;

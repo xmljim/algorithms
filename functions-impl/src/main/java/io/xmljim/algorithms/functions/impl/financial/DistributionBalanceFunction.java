@@ -24,8 +24,10 @@
 package io.xmljim.algorithms.functions.impl.financial;
 
 import io.xmljim.algorithms.functions.financial.DistributionBalance;
+import io.xmljim.algorithms.functions.financial.PaymentFrequency;
 import io.xmljim.algorithms.functions.impl.AbstractFunction;
 import io.xmljim.algorithms.functions.impl.provider.NameConstants;
+import io.xmljim.algorithms.model.Parameter;
 import io.xmljim.algorithms.model.ScalarParameter;
 
     /*
@@ -53,9 +55,10 @@ class DistributionBalanceFunction extends AbstractFunction<DistributionBalance> 
      * @param currentYear
      */
     public DistributionBalanceFunction(ScalarParameter currentBalance, ScalarParameter amortizedValue, ScalarParameter inflation,
-                                       ScalarParameter retirementInterest, ScalarParameter retirementYear, ScalarParameter currentYear) {
+                                       ScalarParameter retirementInterest, ScalarParameter retirementYear, ScalarParameter currentYear,
+                                       Parameter<PaymentFrequency> paymentFrequency) {
 
-        super(FinancialFunctions.DISTRIBUTION_BALANCE_FUNCTION, currentBalance, amortizedValue, inflation, retirementInterest, retirementYear, currentYear);
+        super(FinancialFunctions.DISTRIBUTION_BALANCE_FUNCTION, currentBalance, amortizedValue, inflation, retirementInterest, retirementYear, currentYear, paymentFrequency);
     }
 
     private DistributionBalance getResult() {
@@ -65,7 +68,7 @@ class DistributionBalanceFunction extends AbstractFunction<DistributionBalance> 
         double retirementInterestRate = getDouble(NameConstants.FIN_WEIGHTED_GROWTH_RATE);
         int retirementYear = getInteger(NameConstants.FIN_RETIREMENT_START_YEAR);
         int currentYear = getInteger(NameConstants.FIN_CURRENT_YEAR);
-
+        PaymentFrequency frequency = getValue(NameConstants.FIN_DISTRIBUTION_FREQUENCY);
 
 
 
@@ -84,7 +87,7 @@ class DistributionBalanceFunction extends AbstractFunction<DistributionBalance> 
 
         newBalance = (currentBalance - realDistribution) + interest;
 
-        return new DistributionBalanceImpl(currentYear, newBalance, interest, retirementInterestRate, realDistribution, inflation);
+        return new DistributionBalanceImpl(currentYear, newBalance, interest, retirementInterestRate, realDistribution, inflation, frequency);
     }
 
 

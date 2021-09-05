@@ -30,8 +30,10 @@ abstract class AbstractRetirementBalance implements RetirementBalance {
     private double balance;
     private double interest;
     private final double weightedGrowthRate;
+    private final String type;
 
-    public AbstractRetirementBalance(final int year, final double balance, final double interest, final double weightedGrowthRate) {
+    public AbstractRetirementBalance(String type, final int year, final double balance, final double interest, final double weightedGrowthRate) {
+        this.type = type;
         this.year = year;
         this.balance = balance;
         this.interest = interest;
@@ -56,6 +58,11 @@ abstract class AbstractRetirementBalance implements RetirementBalance {
     @Override
     public double getWeightedGrowthRate() {
         return weightedGrowthRate;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 
     protected void updateBalanceWithInterest(double interest) {

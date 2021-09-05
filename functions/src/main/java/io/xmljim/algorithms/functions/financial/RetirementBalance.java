@@ -25,6 +25,8 @@ package io.xmljim.algorithms.functions.financial;
 
 public interface RetirementBalance {
 
+    String getType();
+
     int getYear();
 
     double getBalance();

@@ -43,7 +43,9 @@ enum FinancialFunctions implements FinancialType {
     RETIREMENT_SCHEDULE("retirementSchedule", "Retirement Schedule"),
     RETIREMENT_DEPLETION_YEAR("retirementDepletionYear", "Retirement Depletion Year"),
     RETIREMENT_INCOME_PCT("retirementIncomePct", "Retirement Income Replacement Percentage"),
-    RETIREMENT_ANNUAL_DISTRIBUTION("retirementBaseAnnualDistribution", "Base Retirement Annual Distribution")
+    RETIREMENT_ANNUAL_DISTRIBUTION("retirementBaseAnnualDistribution", "Base Retirement Annual Distribution"),
+    RETIREMENT_YEAR("retirementYear", "Retirement Year"),
+    TOTAL_DISTRIBUTIONS("totalDistributions", "Total Distributions")
     ;
 
     private final String name;

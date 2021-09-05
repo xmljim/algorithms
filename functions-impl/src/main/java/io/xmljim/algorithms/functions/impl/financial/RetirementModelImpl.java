@@ -30,12 +30,15 @@ import io.xmljim.algorithms.model.Coefficient;
 import io.xmljim.algorithms.model.Parameter;
 import io.xmljim.algorithms.model.ScalarCoefficient;
 import io.xmljim.algorithms.model.ScalarParameter;
+import io.xmljim.algorithms.model.util.Scalar;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 class RetirementModelImpl extends AbstractModel implements RetirementModel {
+    private RetirementContributionModel retirementContributionModel;
+    private RetirementDistributionModel retirementDistributionModel;
 
     public RetirementModelImpl(ScalarParameter currentAge, ScalarParameter retirementAge, ScalarParameter currentSalary, ScalarParameter currentRetirementBalance,
                                ScalarParameter selfContributionPct, ScalarParameter employerContributionPct, ScalarParameter colaPct, ScalarParameter weightedGrowthRate,
@@ -46,17 +49,14 @@ class RetirementModelImpl extends AbstractModel implements RetirementModel {
                 weightedGrowthRate, postRetirementInterest, distributionFrequency, inflationRate, duration, annualizedLastSalaryPct);
     }
 
-
     @Override
-    public Coefficient<RetirementContributionModel> getRetirementContributionModelCoefficient() {
-        Coefficient<?> coeff = getCoefficient(FinancialFunctions.RETIREMENT_CONTRIBUTION_MODEL.getName());
-        return (Coefficient<RetirementContributionModel>) coeff;
+    public RetirementContributionModel getContributionModel() {
+        return retirementContributionModel;
     }
 
     @Override
-    public Coefficient<RetirementDistributionModel> getRetirementDistributionModelCoefficient() {
-        Coefficient<?> coeff = getCoefficient(FinancialFunctions.RETIREMENT_DISTRIBUTION_MODEL.getName());
-        return (Coefficient<RetirementDistributionModel>) coeff;
+    public RetirementDistributionModel getDistributionModel() {
+        return retirementDistributionModel;
     }
 
     @Override
@@ -78,43 +78,99 @@ class RetirementModelImpl extends AbstractModel implements RetirementModel {
     }
 
     @Override
+    public ScalarCoefficient getRetirementYearCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.RETIREMENT_DEPLETION_YEAR.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
+    public ScalarCoefficient getBalanceAtRetirementCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.CONTRIBUTION_BALANCE.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
+    public ScalarCoefficient getTotalInterestCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.TOTAL_INTEREST.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
+    public ScalarCoefficient getTotalDistributionsCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.TOTAL_DISTRIBUTIONS.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
+    public ScalarCoefficient getTotalSelfContributionsCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.TOTAL_SELF_CONTRIBUTION.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
+    public ScalarCoefficient getTotalEmployerContributionsCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.TOTAL_EMPL_CONTRIBUTION.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
+    public ScalarCoefficient getTotalDistributionYearsCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.DISTRIBUTION_YEARS.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
+    public ScalarCoefficient getBaseAnnualDistributionCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.RETIREMENT_ANNUAL_DISTRIBUTION.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
     public void solve() {
         //This will hold retirement balance entries from both the contribution and distribution models...
         List<RetirementBalance> retirementBalanceList = new ArrayList<>();
 
 
-        RetirementContributionModel contributionModel = getFunctionProvider().getFinancial().retirementContributionModel(
+        retirementContributionModel = getFunctionProvider().getFinancial().retirementContributionModel(
                 getInteger(NameConstants.FIN_AGE), getInteger(NameConstants.FIN_RETIREMENT_AGE), getDouble(NameConstants.FIN_CURRENT_SALARY),
                 getDouble(NameConstants.FIN_EMPLOYEE_CONTRIB_PCT), getDouble(NameConstants.FIN_EMPLOYER_CONTRIB_PCT), getDouble(NameConstants.FIN_CURRENT_401K_BALANCE),
                 getDouble(NameConstants.FIN_COLA_PCT), getDouble(NameConstants.FIN_WEIGHTED_GROWTH_RATE));
 
-        contributionModel.solve();
+        retirementContributionModel.solve();
 
-        retirementBalanceList.addAll(contributionModel.getContributionTimeline());
+        retirementBalanceList.addAll(retirementContributionModel.getContributionTimeline());
 
-        double retirementBalance = contributionModel.getBalance().asDouble();
+        double retirementBalance = retirementContributionModel.getBalance().asDouble();
         int retirementYear = LocalDate.now().getYear() + (getInteger(NameConstants.FIN_RETIREMENT_AGE) - getInteger(NameConstants.FIN_AGE));
         int duration = getInteger(NameConstants.FIN_RETIREMENT_DURATION);
         double postRetirementInterest = getDouble(NameConstants.FIN_POST_RETIRE_INTEREST);
         double inflationRate = getDouble(NameConstants.FIN_INFLATION_RATE);
         PaymentFrequency distributionFrequency = getValue(NameConstants.FIN_DISTRIBUTION_FREQUENCY);
         double annualizedPct = getDouble(NameConstants.FIN_LAST_SALARY_PCT);
-        double annualizedDistribution = contributionModel.getLastSalary().asDouble() * annualizedPct;
+        double annualizedDistribution = retirementContributionModel.getLastSalary().asDouble() * annualizedPct;
 
-        RetirementDistributionModel distributionModel =
+        retirementDistributionModel =
                 getFunctionProvider().getFinancial().retirementDistributionModel(retirementBalance, retirementYear, postRetirementInterest, distributionFrequency,
                         inflationRate, duration, annualizedDistribution);
 
-        distributionModel.solve();
-        retirementBalanceList.addAll(distributionModel.getDistributionSchedule());
+        retirementDistributionModel.solve();
+        retirementBalanceList.addAll(retirementDistributionModel.getDistributionSchedule());
 
-        double incomeReplacementPct = distributionModel.getBaseYearAnnualDistribution().asDouble() / contributionModel.getLastSalary().asDouble();
+        double incomeReplacementPct = retirementDistributionModel.getBaseYearAnnualDistribution().asDouble() / retirementContributionModel.getLastSalary().asDouble();
+        double totalInterest = retirementContributionModel.getTotalInterest().asDouble() + retirementDistributionModel.getTotalInterest().asDouble();
 
-        setCoefficient(FinancialFunctions.RETIREMENT_CONTRIBUTION_MODEL, contributionModel);
-        setCoefficient(FinancialFunctions.RETIREMENT_DISTRIBUTION_MODEL, distributionModel);
         setCoefficient(FinancialFunctions.RETIREMENT_SCHEDULE, retirementBalanceList);
-        setCoefficient(FinancialFunctions.RETIREMENT_INCOME_PCT, incomeReplacementPct);
-        setCoefficient(FinancialFunctions.RETIREMENT_DEPLETION_YEAR, distributionModel.getLastDistributionYear());
+        setCoefficient(FinancialFunctions.RETIREMENT_INCOME_PCT, Scalar.of(incomeReplacementPct));
+        setCoefficient(FinancialFunctions.RETIREMENT_DEPLETION_YEAR, Scalar.of(retirementDistributionModel.getLastDistributionYear()));
+        setCoefficient(FinancialFunctions.RETIREMENT_YEAR, Scalar.of(retirementYear));
+        setCoefficient(retirementContributionModel.getBalanceCoefficient());
+        setCoefficient(FinancialFunctions.TOTAL_INTEREST, Scalar.of(totalInterest));
+        setCoefficient(retirementDistributionModel.getTotalDistributionsCoefficient());
+        setCoefficient(retirementContributionModel.getTotalSelfContributionCoefficient());
+        setCoefficient(retirementContributionModel.getTotalEmployerContributionCoefficient());
+        setCoefficient(retirementDistributionModel.getDistributionYearsCoefficient());
+        setCoefficient(retirementDistributionModel.getBaseYearAnnualDistributionCoefficient());
+
 
     }
 }

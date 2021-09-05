@@ -87,6 +87,18 @@ class RetirementDistributionModelImpl extends AbstractModel implements Retiremen
     }
 
     @Override
+    public ScalarCoefficient getTotalDistributionsCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.TOTAL_DISTRIBUTIONS.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
+    public ScalarCoefficient getTotalInterestCoefficient() {
+        Coefficient<?> coeff = getCoefficient(FinancialFunctions.TOTAL_INTEREST.getName());
+        return (ScalarCoefficient) coeff;
+    }
+
+    @Override
     public void solve() {
         double currentBalance = getDouble(NameConstants.FIN_CURRENT_401K_BALANCE);
         int retirementYear = getInteger(NameConstants.FIN_RETIREMENT_START_YEAR);
@@ -102,22 +114,28 @@ class RetirementDistributionModelImpl extends AbstractModel implements Retiremen
 
         double updatedBalance = currentBalance;
         int currentYear = retirementYear;
+        double totalDistributions = 0.0;
+        double totalInterest = 0.0;
 
         while(updatedBalance > 0) {
             currentYear++;
-            DistributionBalance distributionBalance = calculateNewBalance(updatedBalance, amortizedAnnualDist, inflationRate, interestRate, retirementYear, currentYear);
+            DistributionBalance distributionBalance = calculateNewBalance(updatedBalance, amortizedAnnualDist, inflationRate, interestRate, retirementYear, currentYear, frequency);
             distributionBalanceList.add(distributionBalance);
             updatedBalance = distributionBalance.getBalance();
+            totalDistributions += distributionBalance.getAnnualDistributionAmount();
+            totalInterest += distributionBalance.getInterestAccrued();
         }
 
         setCoefficient(FinancialFunctions.DISTRIBUTION_SCHEDULE, distributionBalanceList);
         setCoefficient(FinancialFunctions.DISTRIBUTION_YEARS, Scalar.of(currentYear - retirementYear));
         setCoefficient(FinancialFunctions.RETIREMENT_ANNUAL_DISTRIBUTION, Scalar.of(amortizedAnnualDist));
         setCoefficient(FinancialFunctions.DISTRIBUTION_LAST_YEAR, Scalar.of(currentYear));
+        setCoefficient(FinancialFunctions.TOTAL_INTEREST, Scalar.of(totalInterest));
+        setCoefficient(FinancialFunctions.TOTAL_DISTRIBUTIONS, Scalar.of(totalDistributions));
     }
 
     /**
-     * Compute a distribution balance using the {@link io.xmljim.algorithms.functions.financial.Financial#distributionBalance(double, double, double, double, int, int)}
+     * Compute a distribution balance using the {@link io.xmljim.algorithms.functions.financial.Financial#distributionBalance(double, double, double, double, int, int, PaymentFrequency)}
      * function
      * @param currentBalance the current balance
      * @param amortizedValue the annualized distribution from the first retirement year
@@ -127,10 +145,11 @@ class RetirementDistributionModelImpl extends AbstractModel implements Retiremen
      * @param currentYear the current year to estimate
      * @return the distribution balance for a given year
      */
-    private DistributionBalance calculateNewBalance(double currentBalance, double amortizedValue, double inflation, double retirementInterest, int retirementYear, int currentYear) {
+    private DistributionBalance calculateNewBalance(double currentBalance, double amortizedValue, double inflation, double retirementInterest, int retirementYear, int currentYear,
+                                                    PaymentFrequency frequency) {
 
         Function<DistributionBalance> distFx = getFunctionProvider().getFinancial().distributionBalance(currentBalance, amortizedValue, inflation,
-                retirementInterest, retirementYear, currentYear);
+                retirementInterest, retirementYear, currentYear, frequency);
 
         return distFx.compute();
     }

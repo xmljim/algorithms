@@ -100,8 +100,8 @@ public interface Financial {
      * @param currentYear the current year - used to compute the distribution amount, adjusted for inflation
      * @return A distribution balance computed to include the estimated annualized distribution amount, interest, and updated retirement account balance
      */
-    Function<DistributionBalance> distributionBalance(double currentBalance, double amortizedValue, double inflation,
-                                                      double retirementInterest, int retirementYear, int currentYear);
+    Function<DistributionBalance> distributionBalance(double currentBalance, double amortizedValue, double inflation, double retirementInterest, int retirementYear,
+                                                      int currentYear, PaymentFrequency paymentFrequency);
 
 
     /**
