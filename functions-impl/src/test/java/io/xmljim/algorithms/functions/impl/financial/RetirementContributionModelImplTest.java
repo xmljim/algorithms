@@ -23,6 +23,7 @@
 
 package io.xmljim.algorithms.functions.impl.financial;
 
+import io.xmljim.algorithms.functions.financial.PaymentFrequency;
 import io.xmljim.algorithms.functions.financial.RetirementContributionModel;
 import io.xmljim.algorithms.functions.provider.FunctionProvider;
 import io.xmljim.algorithms.model.provider.ModelProvider;
@@ -60,7 +61,7 @@ class RetirementContributionModelImplTest {
 
         RetirementContributionModel model =
                 functionProvider.getFinancial().retirementContributionModel(currentAge, retirementAge, currentSalary, selfContribPct, emplContribPct,
-                        currentBalance, colaPct, weightedGrowthPct);
+                        currentBalance, colaPct, weightedGrowthPct, PaymentFrequency.SEMI_MONTHLY);
 
         model.solve();
 

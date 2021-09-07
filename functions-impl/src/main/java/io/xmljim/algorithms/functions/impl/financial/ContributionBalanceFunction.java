@@ -24,6 +24,7 @@
 package io.xmljim.algorithms.functions.impl.financial;
 
 import io.xmljim.algorithms.functions.financial.ContributionBalance;
+import io.xmljim.algorithms.functions.financial.PaymentFrequency;
 import io.xmljim.algorithms.functions.impl.AbstractFunction;
 import io.xmljim.algorithms.functions.impl.provider.NameConstants;
 import io.xmljim.algorithms.model.Parameter;
@@ -38,10 +39,10 @@ class ContributionBalanceFunction extends AbstractFunction<ContributionBalance> 
 
     public ContributionBalanceFunction(ScalarParameter currentSalary, ScalarParameter colaPct, ScalarParameter currentRetirementBalance,
                                        ScalarParameter employeeContribution, ScalarParameter employerContribution, ScalarParameter weightedGrowth,
-                                       ScalarParameter currentYear, ScalarParameter endYear) {
+                                       Parameter<PaymentFrequency> contributionFrequency, ScalarParameter currentYear, ScalarParameter endYear) {
 
         super(FinancialFunctions.CONTRIBUTION_BALANCE_FUNCTION, currentSalary, colaPct, currentRetirementBalance,
-                employeeContribution, employerContribution, weightedGrowth, currentYear, endYear);
+                employeeContribution, employerContribution, weightedGrowth, contributionFrequency, currentYear, endYear);
 
     }
 
@@ -60,11 +61,12 @@ class ContributionBalanceFunction extends AbstractFunction<ContributionBalance> 
         double emplContributionPct = getDouble(NameConstants.FIN_EMPLOYER_CONTRIB_PCT);
         double currentSalary = getDouble(NameConstants.FIN_CURRENT_SALARY);
         double colaPct = getDouble(NameConstants.FIN_COLA_PCT);
+        PaymentFrequency contributionFrequency = getValue(NameConstants.FIN_CONTRIBUTION_FREQUENCY);
         double estimatedSelfContribution = 0.0;
         double estimatedEmplContribution = 0.0;
 
         return new ContributionBalanceImpl(currentYear, currentBalance, interest, weightedGrowthRate,
-                selfContributionPct, emplContributionPct, currentSalary, colaPct, estimatedSelfContribution, estimatedEmplContribution);
+                selfContributionPct, emplContributionPct, currentSalary, colaPct, estimatedSelfContribution, estimatedEmplContribution, contributionFrequency);
     }
 
     private ContributionBalance computeFromPreviousBalance(ContributionBalance balance, Scalar endYearValue) {
@@ -80,9 +82,23 @@ class ContributionBalanceFunction extends AbstractFunction<ContributionBalance> 
     }
 
     private ContributionBalance preProcessCurrentContribution(ContributionBalance contributionBalance) {
-        double newInterest = contributionBalance.getBalance() * contributionBalance.getWeightedGrowthRate();
-        ((ContributionBalanceImpl)contributionBalance).updateBalanceWithInterest(newInterest);
-        return contributionBalance;
+        double periodicSelfContributionAmt = (contributionBalance.getCurrentSalary() * contributionBalance.getSelfContributionPct()) / contributionBalance.getContributionFrequency().getAnnualFrequency();
+        double periodicEmplContributionAmt = (contributionBalance.getCurrentSalary() * contributionBalance.getEmployerContributionPct()) / contributionBalance.getContributionFrequency().getAnnualFrequency();
+
+        LocalDate now = LocalDate.now();
+        int dayOfYear = now.getDayOfYear();
+        int yearLength = now.lengthOfYear();
+        double pctYearRemaining = 1 - ((double)dayOfYear/(double)yearLength);
+        double remainingContributions = Math.floor(pctYearRemaining * contributionBalance.getContributionFrequency().getAnnualFrequency());
+
+        double newSelfContribution = remainingContributions * periodicSelfContributionAmt;
+        double newEmplContribution = remainingContributions * periodicEmplContributionAmt;
+
+        double newInterest = contributionBalance.getBalance() * (contributionBalance.getWeightedGrowthRate() * pctYearRemaining);
+        double newBalance = contributionBalance.getBalance() + newInterest + newSelfContribution + newEmplContribution;
+        return new ContributionBalanceImpl(contributionBalance.getYear(), newBalance, newInterest, contributionBalance.getWeightedGrowthRate(), contributionBalance.getSelfContributionPct(),
+                contributionBalance.getEmployerContributionPct(), contributionBalance.getCurrentSalary(), contributionBalance.getColaPct(),
+                newSelfContribution, newEmplContribution, contributionBalance.getContributionFrequency());
     }
 
     private ContributionBalance incrementBalance(ContributionBalance balance) {
@@ -95,7 +111,7 @@ class ContributionBalanceFunction extends AbstractFunction<ContributionBalance> 
         double estBalance = balance.getBalance() + estInterest + estSelfContrib + estEmpContrib;
 
         return new ContributionBalanceImpl(endYear, estBalance, estInterest, balance.getWeightedGrowthRate(), balance.getSelfContributionPct(),
-                balance.getEmployerContributionPct(), estSalary, balance.getColaPct(), estSelfContrib, estEmpContrib);
+                balance.getEmployerContributionPct(), estSalary, balance.getColaPct(), estSelfContrib, estEmpContrib, balance.getContributionFrequency());
     }
 
 

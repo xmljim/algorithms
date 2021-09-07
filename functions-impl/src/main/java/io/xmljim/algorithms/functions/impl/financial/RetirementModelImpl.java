@@ -42,11 +42,11 @@ class RetirementModelImpl extends AbstractModel implements RetirementModel {
 
     public RetirementModelImpl(ScalarParameter currentAge, ScalarParameter retirementAge, ScalarParameter currentSalary, ScalarParameter currentRetirementBalance,
                                ScalarParameter selfContributionPct, ScalarParameter employerContributionPct, ScalarParameter colaPct, ScalarParameter weightedGrowthRate,
-                               ScalarParameter postRetirementInterest, Parameter<PaymentFrequency> distributionFrequency, ScalarParameter inflationRate, ScalarParameter duration,
-                               ScalarParameter annualizedLastSalaryPct) {
+                               Parameter<PaymentFrequency> contributionFrequency, ScalarParameter postRetirementInterest, Parameter<PaymentFrequency> distributionFrequency,
+                               ScalarParameter inflationRate, ScalarParameter duration, ScalarParameter annualizedLastSalaryPct) {
 
         super(FinancialFunctions.RETIREMENT_MODEL.getName(), currentAge, retirementAge, currentSalary, currentRetirementBalance, selfContributionPct, employerContributionPct, colaPct,
-                weightedGrowthRate, postRetirementInterest, distributionFrequency, inflationRate, duration, annualizedLastSalaryPct);
+                weightedGrowthRate, contributionFrequency, postRetirementInterest, distributionFrequency, inflationRate, duration, annualizedLastSalaryPct);
     }
 
     @Override
@@ -134,7 +134,7 @@ class RetirementModelImpl extends AbstractModel implements RetirementModel {
         retirementContributionModel = getFunctionProvider().getFinancial().retirementContributionModel(
                 getInteger(NameConstants.FIN_AGE), getInteger(NameConstants.FIN_RETIREMENT_AGE), getDouble(NameConstants.FIN_CURRENT_SALARY),
                 getDouble(NameConstants.FIN_EMPLOYEE_CONTRIB_PCT), getDouble(NameConstants.FIN_EMPLOYER_CONTRIB_PCT), getDouble(NameConstants.FIN_CURRENT_401K_BALANCE),
-                getDouble(NameConstants.FIN_COLA_PCT), getDouble(NameConstants.FIN_WEIGHTED_GROWTH_RATE));
+                getDouble(NameConstants.FIN_COLA_PCT), getDouble(NameConstants.FIN_WEIGHTED_GROWTH_RATE), getValue(NameConstants.FIN_CONTRIBUTION_FREQUENCY));
 
         retirementContributionModel.solve();
 

@@ -71,10 +71,11 @@ class AmortizeFunctionTest {
         double currentBalance = 500_000;
         double colaPct = 0.02;
         double weightedGrowthPct = 0.084;
+        PaymentFrequency contributionFrequency = PaymentFrequency.SEMI_MONTHLY;
 
         RetirementContributionModel model =
                 functionProvider.getFinancial().retirementContributionModel(currentAge, retirementAge, currentSalary, selfContribPct, emplContribPct,
-                        currentBalance, colaPct, weightedGrowthPct);
+                        currentBalance, colaPct, weightedGrowthPct, contributionFrequency);
 
         model.solve();
 

@@ -37,5 +37,7 @@ public interface ContributionBalance extends RetirementBalance {
 
     double getEstimatedEmployerContribution();
 
+    PaymentFrequency getContributionFrequency();
+
 
 }

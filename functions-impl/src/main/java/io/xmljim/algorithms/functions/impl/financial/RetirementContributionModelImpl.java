@@ -24,13 +24,11 @@
 package io.xmljim.algorithms.functions.impl.financial;
 
 import io.xmljim.algorithms.functions.financial.ContributionBalance;
+import io.xmljim.algorithms.functions.financial.PaymentFrequency;
 import io.xmljim.algorithms.functions.financial.RetirementContributionModel;
 import io.xmljim.algorithms.functions.impl.AbstractModel;
 import io.xmljim.algorithms.functions.impl.provider.NameConstants;
-import io.xmljim.algorithms.model.Coefficient;
-import io.xmljim.algorithms.model.Function;
-import io.xmljim.algorithms.model.ScalarCoefficient;
-import io.xmljim.algorithms.model.ScalarParameter;
+import io.xmljim.algorithms.model.*;
 import io.xmljim.algorithms.model.util.Scalar;
 
 import java.time.LocalDate;
@@ -43,11 +41,12 @@ class RetirementContributionModelImpl extends AbstractModel implements Retiremen
 
 
     public RetirementContributionModelImpl(ScalarParameter currentAge, ScalarParameter retirementAge, ScalarParameter currentSalary,
-                                       ScalarParameter employeeContribution, ScalarParameter employerContribution,
-                                       ScalarParameter currentBalance, ScalarParameter colaPct, ScalarParameter weightedGrowthRate) {
+                                           ScalarParameter employeeContribution, ScalarParameter employerContribution,
+                                           ScalarParameter currentBalance, ScalarParameter colaPct, ScalarParameter weightedGrowthRate,
+                                           Parameter<PaymentFrequency> contributionFrequency) {
 
         super(FinancialFunctions.RETIREMENT_CONTRIBUTION_MODEL.getName(), currentAge, retirementAge, currentSalary, employeeContribution,
-                employerContribution, currentBalance, colaPct, weightedGrowthRate);
+                employerContribution, currentBalance, colaPct, weightedGrowthRate, contributionFrequency);
 
     }
 
@@ -100,13 +99,14 @@ class RetirementContributionModelImpl extends AbstractModel implements Retiremen
         double currentBalance = getDouble(NameConstants.FIN_CURRENT_401K_BALANCE);
         double colaPct = getDouble(NameConstants.FIN_COLA_PCT);
         double weightedGrowthRate = getDouble(NameConstants.FIN_WEIGHTED_GROWTH_RATE);
+        PaymentFrequency contributionFrequency = getValue(NameConstants.FIN_CONTRIBUTION_FREQUENCY);
 
         int currentYear = LocalDate.now().getYear();
         int yearCount = retirementAge - currentAge;
 
         Function<ContributionBalance> contributionBalance =
                 getFunctionProvider().getFinancial().contributionBalance(currentSalary, colaPct, currentBalance, selfContributionPct, emplContributionPct,
-                        weightedGrowthRate, currentYear, currentYear);
+                        weightedGrowthRate, contributionFrequency, currentYear, currentYear);
 
         balanceSchedule.add(contributionBalance.compute());
 

@@ -51,23 +51,43 @@ class RetirementModelImplTest {
     }
     @Test
     void testSolve() {
-        double currentSalary = 50_000;
-        int currentAge = 40;
+        double currentSalary = 52_095;
+        int currentAge = 32;
         int retirementAge = 65;
-        double currentRetirementBalance = 75_000;
+        double currentRetirementBalance = 26_932;
         double colaPct = 0.03;
-        double selfContributionPct = 0.075;
+        double selfContributionPct = 0.1;
         double employerContributionPct = 0.03;
-        double weightedGrowthPct = 0.085;
+        double weightedGrowthPct = 0.09203168503741728;
         double postRetirementInterest = 0.04;
         double inflationRate = 0.029;
-        int duration = 25;
+        int duration = 0;
         double annualIncomePct = 0.0;
         PaymentFrequency distributionFrequency = PaymentFrequency.MONTHLY;
+        PaymentFrequency contributionFrequency = PaymentFrequency.SEMI_MONTHLY;
+
+        /*
+        {
+    "age": 32,
+    "retirementAge": 65,
+    "currentSalary": 52095.0,
+    "colaPct": 0.03,
+    "currentRetirementBalance": 26932,
+    "selfContributionPct": 0.10,
+    "employerContributionPct": 0.03,
+    "investmentStyle": 0.85,
+    "contributionFrequency": "SEMI_MONTHLY",
+    "postRetirementInterestRate": 0.04,
+    "distributionFrequency": "MONTHLY",
+    "retirementDuration": 0,
+    "incomeReplacementPct": 0.00,
+    "annualizedDistribution": 0.0
+}
+         */
 
         RetirementModel retirementModel =
                 functionProvider.getFinancial().retirementModel(currentAge, retirementAge, currentSalary, currentRetirementBalance, selfContributionPct, employerContributionPct,
-                        colaPct, weightedGrowthPct, postRetirementInterest, distributionFrequency, inflationRate, duration, annualIncomePct);
+                        colaPct, weightedGrowthPct, contributionFrequency, postRetirementInterest, distributionFrequency, inflationRate, duration, annualIncomePct);
 
         retirementModel.solve();
 
@@ -75,8 +95,9 @@ class RetirementModelImplTest {
         assertNotNull(retirementModel.getDistributionModel());
         assertEquals(retirementModel.getRetirementTimeline().size(), retirementModel.getContributionModel().getContributionTimeline().size()
                 + retirementModel.getDistributionModel().getDistributionSchedule().size());
-        assertEquals(duration, retirementModel.getDistributionModel().getDistributionYears().asInt());
-        assertEquals(LocalDate.now().getYear() + duration + (retirementAge - currentAge), retirementModel.getRetirementBalanceDepletionYear().asInt());
+        assertEquals(28, retirementModel.getDistributionModel().getDistributionYears().asInt());
+        assertEquals(LocalDate.now().getYear() + 28 + (retirementAge - currentAge), retirementModel.getRetirementBalanceDepletionYear().asInt());
+        assertNotEquals(0, retirementModel.getRetirementIncomePct().asDouble());
 
 
         AtomicInteger currentYear = new AtomicInteger(LocalDate.now().getYear());
@@ -87,6 +108,8 @@ class RetirementModelImplTest {
             assertEquals(currentYear.get(), balance.getYear());
             currentYear.getAndIncrement();
         });
+
+        System.out.println(retirementModel.getRetirementIncomePct());
 
     }
 

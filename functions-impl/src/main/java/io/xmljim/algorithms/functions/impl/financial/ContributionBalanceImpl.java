@@ -24,6 +24,7 @@
 package io.xmljim.algorithms.functions.impl.financial;
 
 import io.xmljim.algorithms.functions.financial.ContributionBalance;
+import io.xmljim.algorithms.functions.financial.PaymentFrequency;
 
 class ContributionBalanceImpl extends AbstractRetirementBalance implements ContributionBalance {
     private final double selfContributionPct;
@@ -32,10 +33,12 @@ class ContributionBalanceImpl extends AbstractRetirementBalance implements Contr
     private final double colaPct;
     private final double estimatedSelfContribution;
     private final double estimatedEmployerContribution;
+    private final PaymentFrequency contributionFrequency;
 
     public ContributionBalanceImpl(final int year, final double balance, final double interest, final double weightedGrowthRate,
                                    final double selfContributionPct, final double employerContributionPct, final double currentSalary,
-                                   final double colaPct, final double estimatedSelfContribution, final double estimatedEmployerContribution) {
+                                   final double colaPct, final double estimatedSelfContribution, final double estimatedEmployerContribution,
+                                   final PaymentFrequency contributionFrequency) {
 
         super("contribution", year, balance, interest, weightedGrowthRate);
         this.selfContributionPct = selfContributionPct;
@@ -44,6 +47,7 @@ class ContributionBalanceImpl extends AbstractRetirementBalance implements Contr
         this.colaPct = colaPct;
         this.estimatedSelfContribution = estimatedSelfContribution;
         this.estimatedEmployerContribution = estimatedEmployerContribution;
+        this.contributionFrequency = contributionFrequency;
     }
 
     @Override
@@ -74,6 +78,11 @@ class ContributionBalanceImpl extends AbstractRetirementBalance implements Contr
     @Override
     public double getEstimatedEmployerContribution() {
         return estimatedEmployerContribution;
+    }
+
+    @Override
+    public PaymentFrequency getContributionFrequency() {
+        return contributionFrequency;
     }
 
     @Override

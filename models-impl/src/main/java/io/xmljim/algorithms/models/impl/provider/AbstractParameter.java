@@ -20,4 +20,12 @@ abstract class AbstractParameter<T> extends AbstractVariableEntity implements Pa
     public T getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractParameter{" +
+                "name=" + getName() + ", " +
+                "value=" + value +
+                "}";
+    }
 }

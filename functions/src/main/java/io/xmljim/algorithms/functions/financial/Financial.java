@@ -85,7 +85,7 @@ public interface Financial {
      * @return
      */
     Function<ContributionBalance> contributionBalance(double currentSalary, double colaPct, double currentRetirementBalance, double selfContributionPct,
-                                                      double employerContributionPct, double weightedGrowthRate, int currentYear, int endYear);
+                                                      double employerContributionPct, double weightedGrowthRate, PaymentFrequency contributionFrequency, int currentYear, int endYear);
 
 
     Function<ContributionBalance> contributionBalance(ContributionBalance previousBalance, int endYear);
@@ -118,7 +118,8 @@ public interface Financial {
      * @return The Retirement contribution model
      */
     RetirementContributionModel retirementContributionModel(int currentAge, int retirementAge, double currentSalary, double employeeContribution,
-                                                            double employerContribution, double currentBalance, double colaPct, double weightedGrowthRate);
+                                                            double employerContribution, double currentBalance, double colaPct, double weightedGrowthRate,
+                                                           PaymentFrequency contributionFrequency);
 
     /**
      * Create a retirement distribution model
@@ -149,6 +150,7 @@ public interface Financial {
      * @param employerContributionPct the percentage of salary the employer will contribute to the retirement account
      * @param colaPct the estimated annual salary cost of living adjustment
      * @param weightedGrowthPct the weighted annual growth rate of the retirement account prior to retirement
+     * @param contributionFrequency the frequency of contributions annually
      * @param postRetirementInterest the estimated annual interest on the retirement account
      * @param distributionFrequency the frequency of distributions
      * @param inflationRate the estimated annual inflation rate
@@ -163,7 +165,8 @@ public interface Financial {
      * @return A retirement model
      */
     RetirementModel retirementModel(int currentAge, int retirementAge, double currentSalary, double currentRetirementBalance, double selfContributionPct,
-                                    double employerContributionPct, double colaPct, double weightedGrowthPct, double postRetirementInterest, PaymentFrequency distributionFrequency,
+                                    double employerContributionPct, double colaPct, double weightedGrowthPct, PaymentFrequency contributionFrequency,
+                                    double postRetirementInterest, PaymentFrequency distributionFrequency,
                                     double inflationRate, int duration, double annualizedLastSalaryPct);
 
 }

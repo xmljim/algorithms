@@ -24,6 +24,7 @@
 package io.xmljim.algorithms.functions.impl.financial;
 
 import io.xmljim.algorithms.functions.financial.ContributionBalance;
+import io.xmljim.algorithms.functions.financial.PaymentFrequency;
 import io.xmljim.algorithms.functions.provider.FunctionProvider;
 import io.xmljim.algorithms.model.Function;
 import io.xmljim.algorithms.model.provider.ModelProvider;
@@ -63,15 +64,15 @@ class ContributionBalanceFunctionTest {
         double weightedGrowth = 0.078;
         int currentYear = LocalDate.now().getYear();
         int endYear = 2021;
+        PaymentFrequency contributionFrequency = PaymentFrequency.SEMI_MONTHLY;
 
-        Function<ContributionBalance> contribution = functionProvider.getFinancial().contributionBalance(salary, colaPct, currentRetirementBalance, selfContributionPct, emplContributionPct, weightedGrowth,
-                currentYear, endYear);
+        Function<ContributionBalance> contribution =
+                functionProvider.getFinancial().contributionBalance(salary, colaPct, currentRetirementBalance, selfContributionPct, emplContributionPct, weightedGrowth,
+                    contributionFrequency, currentYear, endYear);
         ContributionBalance retirementBalance = contribution.compute();
 
 
         assertEquals(endYear, retirementBalance.getYear());
-        assertEquals(currentRetirementBalance * weightedGrowth, retirementBalance.getInterestAccrued());
-        assertEquals(currentRetirementBalance + (currentRetirementBalance * weightedGrowth), retirementBalance.getBalance());
 
     }
 

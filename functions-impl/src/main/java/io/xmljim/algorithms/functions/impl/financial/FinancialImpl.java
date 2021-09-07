@@ -76,7 +76,8 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
     @Override
     public RetirementContributionModel retirementContributionModel(final int currentAge, final int retirementAge, final double currentSalary,
                                                                    final double employeeContribution, final double employerContribution,
-                                                                   final double currentBalance, final double colaPct, final double weightedGrowthRate) {
+                                                                   final double currentBalance, final double colaPct, final double weightedGrowthRate,
+                                                                   final PaymentFrequency contributionFrequency) {
 
         ScalarParameter currentAgeParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_AGE, currentAge);
         ScalarParameter retirementAgeParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_RETIREMENT_AGE, retirementAge);
@@ -86,9 +87,10 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
         ScalarParameter current401kBalanceParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_CURRENT_401K_BALANCE, currentBalance);
         ScalarParameter colaPctParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_COLA_PCT, colaPct);
         ScalarParameter weightedGrowthParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_WEIGHTED_GROWTH_RATE, weightedGrowthRate);
+        Parameter<PaymentFrequency> contributionFrequencyParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_CONTRIBUTION_FREQUENCY, contributionFrequency);
 
         return new RetirementContributionModelImpl(currentAgeParam, retirementAgeParam, currentSalaryParam, selfContribParam, emplContribParam,
-                current401kBalanceParam, colaPctParam, weightedGrowthParam);
+                current401kBalanceParam, colaPctParam, weightedGrowthParam, contributionFrequencyParam);
     }
 
     /**
@@ -98,6 +100,7 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
     public Function<ContributionBalance> contributionBalance(final double currentSalary, final double colaPct,
                                                              final double currentRetirementBalance, final double selfContributionPct,
                                                              final double employerContributionPct, final double weightedGrowthRate,
+                                                             PaymentFrequency contributionFrequency,
                                                              final int currentYear, final int endYear) {
 
         ScalarParameter currentSalaryParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_CURRENT_SALARY, currentSalary);
@@ -106,11 +109,12 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
         ScalarParameter selfContributionPctParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_EMPLOYEE_CONTRIB_PCT, selfContributionPct);
         ScalarParameter emplContributionPctParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_EMPLOYER_CONTRIB_PCT, employerContributionPct);
         ScalarParameter weightedGrowthRateParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_WEIGHTED_GROWTH_RATE, weightedGrowthRate);
+        Parameter<PaymentFrequency> contributionFrequencyParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_CONTRIBUTION_FREQUENCY, contributionFrequency);
         ScalarParameter currentYearParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_CURRENT_YEAR, currentYear);
         ScalarParameter endYearParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_END_YEAR, endYear);
 
         return new ContributionBalanceFunction(currentSalaryParam, colaPctParam, currentRetirementBalanceParam, selfContributionPctParam,
-                emplContributionPctParam, weightedGrowthRateParam, currentYearParam, endYearParam);
+                emplContributionPctParam, weightedGrowthRateParam, contributionFrequencyParam, currentYearParam, endYearParam);
     }
 
     /**
@@ -168,8 +172,8 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
     @Override
     public RetirementModel retirementModel(final int currentAge, final int retirementAge, final double currentSalary, final double currentRetirementBalance,
                                            final double selfContributionPct, final double employerContributionPct, final double colaPct, final double weightedGrowthPct,
-                                           final double postRetirementInterest, final PaymentFrequency distributionFrequency, final double inflationRate, final int duration,
-                                           final double annualizedLastSalaryPct) {
+                                           final PaymentFrequency contributionFrequency, final double postRetirementInterest, final PaymentFrequency distributionFrequency,
+                                           final double inflationRate, final int duration, final double annualizedLastSalaryPct) {
 
         ScalarParameter currentAgeParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_AGE, currentAge);
         ScalarParameter retirementAgeParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_RETIREMENT_AGE, retirementAge);
@@ -179,6 +183,7 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
         ScalarParameter emplContributionPctParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_EMPLOYER_CONTRIB_PCT, employerContributionPct);
         ScalarParameter colaPctParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_COLA_PCT, colaPct);
         ScalarParameter weightedGrowthParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_WEIGHTED_GROWTH_RATE, weightedGrowthPct);
+        Parameter<PaymentFrequency> contributionFequencyParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_CONTRIBUTION_FREQUENCY, contributionFrequency);
         ScalarParameter postRetirementInterestParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_POST_RETIRE_INTEREST, postRetirementInterest);
         Parameter<PaymentFrequency> paymentFrequencyParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_DISTRIBUTION_FREQUENCY, distributionFrequency);
         ScalarParameter inflationRateParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_INFLATION_RATE, inflationRate);
@@ -186,6 +191,6 @@ public class FinancialImpl extends AbstractFunctionFactory implements Financial 
         ScalarParameter incomeReplacementPctParam = getModelProvider().getParameterFactory().createParameter(NameConstants.FIN_LAST_SALARY_PCT, annualizedLastSalaryPct);
 
         return new RetirementModelImpl(currentAgeParam, retirementAgeParam, currentSalaryParam, currentRetirementBalanceParam, selfContributionPctParam, emplContributionPctParam,
-                colaPctParam, weightedGrowthParam, postRetirementInterestParam, paymentFrequencyParam, inflationRateParam, durationParam, incomeReplacementPctParam);
+                colaPctParam, weightedGrowthParam, contributionFequencyParam, postRetirementInterestParam, paymentFrequencyParam, inflationRateParam, durationParam, incomeReplacementPctParam);
     }
 }

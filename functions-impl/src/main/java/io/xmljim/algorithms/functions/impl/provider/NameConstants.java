@@ -53,6 +53,7 @@ public interface NameConstants {
     static final String FIN_DISTRIBUTION_FREQUENCY = "distributionFrequency";
     static final String FIN_ANNUAL_DISTRIBUTION = "annualizedDistribution";
     static final String FIN_LAST_SALARY_PCT = "annualizedLastSalaryPct";
+    static final String FIN_CONTRIBUTION_FREQUENCY = "contributionFrequency";
 
 
 }
