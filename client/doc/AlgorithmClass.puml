@@ -1,0 +1,65 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+package Models {
+    interface ModelProvider
+    interface VectorFactory
+    interface ParameterFactory
+    interface CoefficientFactory
+    interface MatrixFactory
+    interface Vector<T>
+    interface Parameter<T>
+    interface Coefficient<T>
+    interface Matrix
+
+    ModelProvider *-- VectorFactory
+    ModelProvider *-- ParameterFactory
+    ModelProvider *-- CoefficientFactory
+    ModelProvider *-- MatrixFactory
+
+
+
+    VectorFactory "creates" *-- Vector
+    ParameterFactory "creates" *-- Parameter
+    CoefficientFactory "creates" *-- Coefficient
+    MatrixFactory "creates" *-- Matrix
+
+    interface Function<T>
+    interface Model
+}
+
+package Functions {
+    interface FunctionProvider
+    interface Statistics {
+        + LinearRegressionModel linearRegressionModel()
+        + ScalarFunction standardDeviation(Vector vector)
+
+    }
+    interface Financial {
+        + ScalarFunction amortize(...)
+        + Function<RetirementBalance> retirementBalance(...)
+        + RetirementModel<List<RetirementBalance> retirementModel(...)
+    }
+
+    FunctionProvider *-- Statistics
+    FunctionProvider *-- Financial
+
+    Statistics --> Function
+    Statistics --> Model
+
+    Financial --> Function
+    Financial --> Model
+}
+
+package Client {
+    class AlgorithmClient
+
+    AlgorithmClient *-- ModelProvider
+    AlgorithmClient *-- FunctionProvider
+}
+
+
+
+
+@enduml

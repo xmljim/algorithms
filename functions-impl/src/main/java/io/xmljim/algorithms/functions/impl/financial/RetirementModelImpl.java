@@ -170,6 +170,7 @@ class RetirementModelImpl extends AbstractModel implements RetirementModel {
         setCoefficient(retirementContributionModel.getTotalEmployerContributionCoefficient());
         setCoefficient(retirementDistributionModel.getDistributionYearsCoefficient());
         setCoefficient(retirementDistributionModel.getBaseYearAnnualDistributionCoefficient());
+        setCoefficient(retirementContributionModel.getLastSalaryCoefficient());
 
 
     }
